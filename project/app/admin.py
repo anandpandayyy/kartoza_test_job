@@ -1,22 +1,26 @@
 from django.contrib import admin
-from django.contrib.auth.admin import UserAdmin as DjangoUserAdmin
 from django.utils.translation import gettext_lazy as _
-from app import models
+from .models import  User
 
 # Register your models here.
-@admin.register(models.User)
-class UserAdmin(DjangoUserAdmin):
-    fieldsets = (
-        (None, {
-            'fields': ('username', 'password')
-        }),
-        (_('Personal info'), {
-            'fields': ('email', 'first_name', 'last_name', 'image', 'phone_number')
-        }),
-        (_('Permissions'), {
-            'fields': ('is_active', 'is_staff', 'is_superuser', 'is_valid',),
-        }),
-        (_('Important dates'), {
-            'fields': ('last_login', 'date_joined',)
-        }),
-    )
+class UserAdmin(admin.ModelAdmin):
+    list_display = ["username",
+        "email",
+        "address",
+        "phone_number",
+        "is_staff",
+        "is_superuser",]
+        
+    readonly_fields = ["is_superuser",
+        "user_permissions",
+        "groups",
+        "date_joined",
+        "is_active",
+        "last_login",]
+
+    def get_readonly_fields(self, request, obj=None):
+        if request.user.is_superuser:
+            return []
+        return self.readonly_fields
+
+admin.site.register(User,UserAdmin)
