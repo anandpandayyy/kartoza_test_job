@@ -30,3 +30,6 @@ jobs:
     
     - name: Run Tests
       run: python project/manage.py test
+      
+    - name: formating code
+      run: flake8
