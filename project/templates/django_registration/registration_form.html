@@ -1,13 +1,91 @@
+{% load static %}
+
 <!DOCTYPE html>
-<html>
-  <meta charset="utf-8" />
+<html lang="en">
   <head>
-    <title></title>
+    <title>Register</title>
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="{% static 'css/register.css' %}" />
   </head>
+
   <body>
+    <div class="background">
+      <div class="shape"></div>
+      <div class="shape"></div>
+    </div>
     <form method="post">
-      {% csrf_token %} {{form}}
-      <input type="submit" value="Submit" />
+      {% csrf_token %}
+      <h3>Registration</h3>
+      <div class="form-group input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text"> </span>
+        </div>
+        <input
+          type="text"
+          name="username"
+          class="form-control"
+          placeholder="User Name"
+          maxlength="150"
+          autocapitalize="none"
+          autocomplete="username"
+          autofocus
+          required="True"
+          id="id_username"
+        />
+      </div>
+      <!-- form-group// -->
+      <div class="form-group input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text"> </span>
+        </div>
+        <input
+          type="email"
+          name="email"
+          class="form-control"
+          placeholder="Enter Email"
+          maxlength="254"
+          required="True"
+          id="id_email"
+        />
+      </div>
+      <!-- form-group// -->
+      <div class="form-group input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text"> </span>
+        </div>
+        <input
+          name="password1"
+          class="form-control"
+          placeholder="Enter password"
+          type="password"
+          required
+        />
+      </div>
+      <!-- form-group// -->
+      <div class="form-group input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text"> </span>
+        </div>
+        <input
+          name="password2"
+          class="form-control"
+          placeholder="Confirm password"
+          type="password"
+          required
+        />
+      </div>
+      <!-- form-group// -->
+      <button type="submit" value="Register">Register</button>
     </form>
+    <script src="" async defer></script>
   </body>
 </html>
