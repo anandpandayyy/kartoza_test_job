@@ -1,85 +1,92 @@
 from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
-from .models import  User
+from .models import User
 from django.contrib import admin
-from django.contrib.admin.models import LogEntry, DELETION
 from django.utils.html import escape
 from django.urls import reverse
 from django.utils.safestring import mark_safe
+from django.contrib.admin.models import ADDITION, CHANGE, DELETION, LogEntry
+from django.utils.translation import pgettext_lazy
+from django.contrib.contenttypes.models import ContentType
+from django.urls import NoReverseMatch, reverse
+from django.utils.encoding import force_str
 
 
-# Register your models here.
 class UserAdmin(admin.ModelAdmin):
-    list_display = ["username",
-        "email",
-        "address",
-        "phone_number",
-        "is_staff",
-        "is_superuser",]
 
-    readonly_fields = ["is_superuser",
-        "user_permissions",
-        "groups",
-        "date_joined",
-        "is_active",
-        "last_login",]
+    def get_fieldsets(self, request, obj):
+        if obj is None:
+            return [
+                (
+                    None,
+                    {'fields': ('type', 'description',)}
+                )
+            ]
+        elif request.user.is_superuser:
+            return [
+                (
+                    None,
+                    {'fields': ('password', 'username', 'email',
+                                'address', 'phone_number')}
+                )
+            ]
+        else:
+            return [
+                (
+                    None,
+                    {'fields': ('password', 'username', 'email',
+                                'address', 'phone_number')}
+                )
+            ]
 
-    def get_readonly_fields(self, request, obj=None):
-        if request.user.is_superuser:
-            return []
-        return self.readonly_fields
 
-admin.site.register(User,UserAdmin)
-
-
+action_names = {
+    ADDITION: pgettext_lazy("logentry_admin:action_type", "Logged In"),
+    DELETION: pgettext_lazy("logentry_admin:action_type", "Logged Out"),
+    CHANGE: pgettext_lazy("logentry_admin:action_type", "Change"),
+}
 
 
-
-@admin.register(LogEntry)
 class LogEntryAdmin(admin.ModelAdmin):
-    date_hierarchy = 'action_time'
+    """
+    Log-in log-out entry's
+    """
 
-    list_filter = [
-        'user',
-        'content_type',
-        'action_flag'
-    ]
-
-    search_fields = [
-        'object_repr',
-        'change_message'
-    ]
+    list_display_links = ["action_time", "action_description"]
 
     list_display = [
-        'action_time',
-        'user',
-        'content_type',
-        'object_link',
-        'action_flag',
+        "user_details",
+        "content_type",
+        "action_description",
+        "action_time",
     ]
 
-    def has_add_permission(self, request):
-        return False
+    def get_actions(self, request):
+        actions = super(LogEntryAdmin, self).get_actions(request)
+        actions.pop("delete_selected", None)
+        return actions
 
-    def has_change_permission(self, request, obj=None):
-        return False
+    def action_description(self, obj):
+        return action_names[obj.action_flag]
+    action_description.short_description = _("action")
 
-    def has_delete_permission(self, request, obj=None):
-        return False
-
-    def has_view_permission(self, request, obj=None):
-        return request.user.is_superuser
-
-    def object_link(self, obj):
-        if obj.action_flag == DELETION:
-            link = escape(obj.object_repr)
-        else:
-            ct = obj.content_type
-            link = '<a href="%s">%s</a>' % (
-                reverse('admin:%s_%s_change' % (ct.app_label, ct.model), args=[obj.object_id]),
-                escape(obj.object_repr),
+    def user_details(self, obj):
+        content_type = ContentType.objects.get_for_model(type(obj.user))
+        user_link = escape(force_str(obj.user))
+        try:
+            url = reverse(
+                "admin:{}_{}_change".format(
+                    content_type.app_label, content_type.model),
+                args=[obj.user.pk],
             )
-        return mark_safe(link)
-    object_link.admin_order_field = "object_repr"
-    object_link.short_description = "object"
+            user_link = '<a href="{}">{}</a>'.format(url, user_link)
+        except NoReverseMatch:
+            pass
+        return mark_safe(user_link)
 
+    user_details.admin_order_field = "user"
+    user_details.short_description = _("user")
+
+
+admin.site.register(LogEntry, LogEntryAdmin)
+admin.site.register(User, UserAdmin)
