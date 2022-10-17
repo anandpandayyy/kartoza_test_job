@@ -28,6 +28,5 @@ jobs:
     - name: Run migrations
       run: python project/manage.py migrate
     
-#     - name: Run Tests
-#       run: |
-#         python manage.py test
+    - name: Run Tests
+      run: python project/manage.py test
