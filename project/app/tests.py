@@ -4,6 +4,10 @@ from .models import User
 
 
 class UserModelTest(TestCase):
+    """
+    User Models all test cases
+    """
+
     @classmethod
     def setUpTestData(cls):
         User.objects.create(

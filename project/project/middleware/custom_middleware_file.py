@@ -3,6 +3,11 @@ from django.utils.deprecation import MiddlewareMixin
 
 
 class ExampleMiddleware(MiddlewareMixin, object):
+    """
+    this middleware will redirect user bases on thier role
+    (normal user or superuser)
+    """
+
     def _init_(self, get_response):
         self.get_response = get_response
 

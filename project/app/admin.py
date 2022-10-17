@@ -13,38 +13,11 @@ from django_admin_geomap import ModelAdmin
 
 # Register your models here.
 class UserAdmin(admin.ModelAdmin):
-    def get_fieldsets(self, request, obj):
-        if request.user.is_superuser:
-            return [
-                (
-                    None,
-                    {
-                        "fields": (
-                            "password",
-                            "username",
-                            "email",
-                            "first_name",
-                            "last_name",
-                            "image",
-                            "address",
-                            "phone_number",
-                            "is_active",
-                            "is_staff",
-                            "is_superuser",
-                            "last_login",
-                            "date_joined",
-                            "lat",
-                            "lat",
-                        )
-                    },
-                )
-            ]
-        else:
-            return [
-                (
-                    None,
-                    {
-                        "fields": (
+    """
+    Changing user field set based on user role
+    """
+
+    common_field = (
                             "password",
                             "username",
                             "email",
@@ -56,12 +29,38 @@ class UserAdmin(admin.ModelAdmin):
                             "lat",
                             "lon",
                         )
+
+    def get_fieldsets(self, request, obj):
+        if request.user.is_superuser:
+            return [
+                (
+                    None,
+                    {
+                        "fields": self.common_field + (
+                            "is_active",
+                            "is_staff",
+                            "is_superuser",
+                            "last_login",
+                            "date_joined",
+                        )
+                    },
+                )
+            ]
+        else:
+            return [
+                (
+                    None,
+                    {
+                        "fields": self.common_field
                     },
                 )
             ]
 
 
 class Admin(ModelAdmin, UserAdmin):
+    """
+    adding map in user model
+    """
     geomap_field_longitude = "id_lon"
     geomap_field_latitude = "id_lat"
 
