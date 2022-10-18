@@ -28,5 +28,6 @@ class Command(BaseCommand):
                         lon=new["lon"],
                         lat=new["lat"],
                     )
+                print("User's created successfully")
         except IntegrityError:
             print("Managment command already runned successfully")
