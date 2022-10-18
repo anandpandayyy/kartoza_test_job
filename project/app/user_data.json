@@ -1,0 +1,37 @@
+{
+	"client": [{
+		"username":"John",
+		"email":"john@gmail.com",
+		"lon":"45.67",
+        "lat":"34.89",
+		"password":"admin@123"
+	},
+     {
+		"username":"jack",
+		"email":"jack@gmail.com",
+		"lon":"56.67",
+        "lat":"67.89",
+		"password":"admin@123"
+	},
+     {
+		"username":"david",
+		"email":"david@gmail.com",
+		"lon":"34.67",
+        "lat":"87.89",
+		"password":"admin@123"
+	},
+     {
+		"username":"alex",
+		"email":"alex@gmail.com",
+		"lon":"66.22",
+        "lat":"59.12",
+		"password":"admin@123"
+	},
+     {
+		"username":"smith",
+		"email":"smith@gmail.com",
+		"lon":"88.64",
+        "lat":"56.77",
+		"password":"admin@123"
+	}]
+}
