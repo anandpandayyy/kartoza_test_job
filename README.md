@@ -23,7 +23,13 @@ Windows
 $ python3 -m venv env
 $ env\Scripts\activate
 ```
+or
 
+if python3 is not working try that code
+```sh
+$ python -m venv env
+$ env\Scripts\activate
+```
 Then install the dependencies:
 
 ```sh
@@ -43,7 +49,7 @@ Then we have to create some dummy user that will show in map. So their is a mana
 (env)$ python manage.py create_users
 (env)$ python manage.py runserver
 ```
-And navigate to [LOGIN](http://127.0.0.1:8000/login/)
+And navigate to [click here to LOGIN](http://127.0.0.1:8000/login/)
 
 In order to test all user you have to login from the superuser account so their is credential of a super user
 
@@ -55,12 +61,12 @@ After login you will redirect to the admin home page where only superuser can ac
 
 ## Login/Logout entry
 
-Super user can also check the login , logout activity of all user [check log activity](http://127.0.0.1:8000/admin/admin/logentry/)
+Super user can also check the login , logout activity of all user [click here to check log activity](http://127.0.0.1:8000/admin/admin/logentry/)
 
 
 ## Normal user login
 
-When a normal user login via [LOGIN](http://127.0.0.1:8000/login/)
+When a normal user login via [click here to LOGIN](http://127.0.0.1:8000/login/)
 
 `username`:`smith`
 
@@ -70,7 +76,7 @@ it will redirect to admin login page where he can edit their profile and review 
 
 ## To register new user
 
-[REGISTER](http://127.0.0.1:8000/register/)
+[click here to REGISTER](http://127.0.0.1:8000/register/)
 
 ## Tests
 

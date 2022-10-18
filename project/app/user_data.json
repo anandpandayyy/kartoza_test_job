@@ -1,6 +1,6 @@
 {
 	"client": [{
-		"username":"John",
+		"username":"john",
 		"email":"john@gmail.com",
 		"lon":"45.67",
         "lat":"34.89",
